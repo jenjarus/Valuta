@@ -14,8 +14,8 @@ const rateEl = document.getElementById('rate');
 const swap = document.getElementById('swap');
 
 function calculate() {
-    const currency_one = currencyEl_one.value;
-    const currency_two = currencyEl_two.value;
+    const currency_one = currencyEl_one.value.length ? currencyEl_one.value : "RUB";
+    const currency_two = currencyEl_two.value.length ? currencyEl_two.value : "USD";
 
     fetch(`https://api.exchangerate-api.com/v4/latest/${currency_one}`)
         .then(res => res.json())
@@ -37,6 +37,17 @@ function calculate() {
         });
 }
 
+function select(item, selected) {
+    fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
+        .then(res => res.json())
+        .then(data => {
+            let arrCurrencyName = Object.keys(data.rates);
+            arrCurrencyName.map(function(el) {
+                item.innerHTML += (`<option value="${el}" ${el === selected ? 'selected' : ''}>${el}</option>`);
+            });
+        });
+}
+
 currencyEl_one.addEventListener('change', calculate);
 amountEl_one.addEventListener('input', calculate);
 currencyEl_two.addEventListener('change', calculate);
@@ -48,4 +59,7 @@ swap.addEventListener('click', () => {
     calculate();
 });
 
+
+select(currencyEl_one, "RUB");
+select(currencyEl_two, "USD");
 calculate();
