@@ -13,6 +13,23 @@ const amountWon = document.getElementById('amount-KRW');
 const rateEl = document.getElementById('rate');
 const swap = document.getElementById('swap');
 
+const arrFullName = {
+    'RUB': 'Российские рубли',
+    'USD': 'Американские Доллары',
+    'EUR': 'Европейские Евро',
+    'GBP': 'Фунт стерлингов',
+    'CHF': 'Швейцарский франк',
+    'BYN': 'Белорусский рубль',
+    'UAH': 'Украинская гривна',
+    'ILS': 'Израильский шекель',
+    'NOK': 'Норвежская крона',
+    'CNY': 'Китайский юань',
+    'JPY': 'Японские Йены',
+    'KRW': 'Корейские Воны',
+    'AMD': 'Армянский драм',
+    'BRL': 'Бразильский реал',
+};
+
 function calculate() {
     const currency_one = currencyEl_one.value.length ? currencyEl_one.value : "RUB";
     const currency_two = currencyEl_two.value.length ? currencyEl_two.value : "USD";
@@ -41,9 +58,12 @@ function select(item, selected) {
     fetch(`https://api.exchangerate-api.com/v4/latest/USD`)
         .then(res => res.json())
         .then(data => {
-            let arrCurrencyName = Object.keys(data.rates);
-            arrCurrencyName.map(function(el) {
-                item.innerHTML += (`<option value="${el}" ${el === selected ? 'selected' : ''}>${el}</option>`);
+            const CurrencyNames = Object.keys(data.rates);
+            CurrencyNames.map(function(el) {
+                item.innerHTML += (`
+                                    <option value="${el}" ${el === selected ? 'selected' : ''}>
+                                        ${arrFullName[el] ? arrFullName[el]: el}
+                                    </option>`);
             });
         });
 }
